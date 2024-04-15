@@ -13,35 +13,35 @@ const sucessText = sucess ? "Success" : "Failure"
 
 ---
 
-
 <a
-href={`/launch/${id}`}
-class = "rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:scale-105 hover:scale-105 hover:bg-gray-700 hover:border-gray-500 transition flex flex-col"
+    href={`/launch/${id}`}
+    class="rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:scale-105 hover:bg-gray-700 hover:border-gray-500 transition flex flex-col"
+    style={{ display: "block", textDecoration: "none", width: "100%" }} 
 >
 
-<picture class = "flex justify-center p-4">
-    <img class = "mb -5 rounded-lg" src = {img === null ? "https://wallpapercave.com/wp/wp4153185.png" : img} alt = {`Patch for launch ${id}`} />
-</picture>
+    <picture class="flex justify-center p-4" style={{ width: "100%" }}>
+        <img class="mb-5 rounded-lg" src={img === null ? "https://wallpapercave.com/wp/wp4153185.png" : img} alt={`Patch for launch ${id}`} style={{ width: "100%", height: "auto" }} /> 
+    </picture>
 
-<header class = "p4 flex-grow">
-    <span 
-    class:list={[
-        "text-xs font-semibold mr-2 px2.5 py-0.5 rounded", {
-            "bg-green-200 text-green-900": sucess,
-            "bg-red-200 text-red-900": !sucess
-        }
-    ]}>
-        {sucessText}
-    </span>
+    <header class="p4 flex-grow">
+        <span
+            class:list={[
+                "text-xs font-semibold mr-2 px-2.5 py-0.5 rounded",
+                {
+                    "bg-green-200 text-green-900": sucess,
+                    "bg-red-200 text-red-900": !sucess
+                }
+            ]}
+        >
+            {sucessText}
+        </span>
 
-    <h2 class = 'my-2 text-2xl font-bold tracking-tight text-white'>
-        Flight #{flightNumber}
-    </h2>
+        <h2 class='my-2 text-2xl font-bold tracking-tight text-white'>
+            Flight #{flightNumber}
+        </h2>
 
-    <p class="mb-4 font-light text-gray-400" >
-        {details != null && details?.length > 100 ? details.slice(0, 100) + "..." : details != null ? details : "Details not available"}
-
-    </p>
-
-</header>
+        <p class="mb-4 font-light text-gray-400">
+            {details != null && details?.length > 100 ? details.slice(0, 100) + "..." : details != null ? details : "Details not available"}
+        </p>
+    </header>
 </a>
