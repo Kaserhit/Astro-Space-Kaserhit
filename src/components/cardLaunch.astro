@@ -13,14 +13,14 @@ const sucessText = sucess ? "Success" : "Failure"
 
 ---
 
+
 <a
     href={`/launch/${id}`}
     class="rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:scale-105 hover:bg-gray-700 hover:border-gray-500 transition flex flex-col"
     style={{ display: "block", textDecoration: "none", width: "100%" }} 
 >
-
     <picture class="flex justify-center p-4" style={{ width: "100%" }}>
-        <img class="mb-5 rounded-lg" src={img === null ? "https://wallpapercave.com/wp/wp4153185.png" : img} alt={`Patch for launch ${id}`} style={{ width: "100%", height: "auto" }} /> 
+        <img class="mb-5 rounded-lg" src={img === null ? "https://wallpapercave.com/wp/wp4153185.png" : img} alt={`Patch for launch ${id}`} style={{ width: "100%", height: "auto" }} loading="lazy" />
     </picture>
 
     <header class="p4 flex-grow">
