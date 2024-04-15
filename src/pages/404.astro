@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="404 Not Found">
+    <div class="flex flex-col justify-center items-center">
+      <h1 class="text-white text-3xl text-center fade-in-out">This Page doesn't exist 😞 ...</h1>
+      <h1 class="text-white text-3xl text-center fade-in-out" style="animation-delay: 5s;">For now 😏 ...</h1>
+      <img src="https://midu.dev/images/this-is-fine-404.gif" alt="404" style="padding-top: 100px;">
+    </div>
+</Layout>
+
+<style>
+  
+.fade-in-out {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-duration: 10s;
+  animation-iteration-count: infinite; 
+}
+
+.fade-in-out:nth-of-type(1) {
+  animation-name: fadeOutFadeIn;
+}
+
+.fade-in-out:nth-of-type(2) {
+  animation-name: fadeOutFadeIn; 
+}
+
+@keyframes fadeOutFadeIn {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+</style>

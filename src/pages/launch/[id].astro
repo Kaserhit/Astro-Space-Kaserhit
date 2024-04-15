@@ -1,0 +1,98 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { getLaunchById, getLastestLaunches, getRocketbyId } from "../../services/spaceX"
+
+const { id } = Astro.params;
+let launch = null;
+let rocket = null;
+
+if (id) {
+    launch = await getLaunchById({ id });
+    if (launch?.rocket) {
+        rocket = await getRocketbyId({ id: launch?.rocket });
+    }
+} else {
+    Astro.redirect("/404");
+}
+
+export async function getStaticPaths() {
+    const launches = await getLastestLaunches('asc');
+    return launches.map(launch => ({
+        params: { id: launch.id },
+    }));
+}
+---
+<Layout title={`Launch ${launch?.name || "Unknown"}`}>
+    <div class="max-w-5xl mx-auto px-8 py-6 space-y-6">
+        <article class="bg-gray-800 text-white rounded-lg shadow-lg p-8 space-y-8">
+            <div class="grid grid-cols-2 gap-8">
+                <div class="space-y-4">
+                    <h2 class="text-4xl font-bold">Launch #{launch?.flight_number}: {launch?.name}</h2>
+                    <p class="text-lg">{launch?.details || "Details not available."}</p>
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                        <p>Date: {launch?.date_utc}</p>
+                    </div>
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-rocket mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" /><path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" /><path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                        <p>Rocket ID: {launch?.rocket}</p>
+                    </div>
+                    {launch?.success === false && (
+                        <div class="bg-red-100 border border-red-500 text-red-700 px-4 py-2 rounded-lg">
+                            <p class="text-lg font-semibold">Mission was not successful.</p>
+                        </div>
+                    )}
+                    {launch?.success === true && (
+                        <div class="bg-green-100 border border-green-500 text-green-700 px-4 py-2 rounded-lg">
+                            <p class="text-lg font-semibold">Mission was successful.</p>
+                        </div>
+                    )}
+                </div>
+                <div class="flex justify-center items-center">
+                    <img src={launch?.links?.patch.small || "https://wallpapercave.com/wp/wp4153185.png"} alt={`Patch of ${launch?.name}`} class="max-w-full h-auto" style="max-width: 300px;">
+                </div>
+            </div>
+            {launch?.links?.webcast && (
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold">Launch Video</h3>
+                    <div class="aspect-w-16 aspect-h-9">
+                        <iframe src={`https://www.youtube.com/embed/${launch?.links.youtube_id}`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="w-full h-full"></iframe>
+                    </div>
+                </div>
+            )}
+            <div class="grid grid-cols-2 gap-8">
+                {launch?.links?.wikipedia && (
+                    <div>
+                        <h3 class="text-2xl font-bold flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-wikipedia mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4.984h2" /><path d="M8 4.984h2.5" /><path d="M14.5 4.984h2.5" /><path d="M22 4.984h-2" /><path d="M4 4.984l5.455 14.516l6.545 -14.516" /><path d="M9 4.984l6 14.516l6 -14.516" /></svg>Wikipedia</h3>
+                        <p><a href={launch?.links.wikipedia} class="text-blue-300 hover:underline">Wikipedia</a></p>
+                    </div>
+                )}
+                {launch?.links?.reddit.launch && (
+                    <div>
+                        <h3 class="text-2xl font-bold flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-reddit mr-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 8c2.648 0 5.028 .826 6.675 2.14a2.5 2.5 0 0 1 2.326 4.36c0 3.59 -4.03 6.5 -9 6.5c-4.875 0 -8.845 -2.8 -9 -6.294l-1 -.206a2.5 2.5 0 0 1 2.326 -4.36c1.646 -1.313 4.026 -2.14 6.674 -2.14z" /><path d="M12 8l1 -5l6 1" /><path d="M19 4m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><circle cx="9" cy="13" r=".5" fill="currentColor" /><circle cx="15" cy="13" r=".5" fill="currentColor" /><path d="M10 17c.667 .333 1.333 .5 2 .5s1.333 -.167 2 -.5" /></svg>Reddit</h3>
+                        <p><a href={launch?.links.reddit.launch} class="text-blue-300 hover:underline">Reddit Launch Discussion</a></p>
+                    </div>
+                )}
+            </div>
+            {rocket && (
+                <div class="bg-gray-700 rounded-lg p-6 space-y-6 mt-4">
+                    <h2 class="text-2xl font-bold text-white">Rocket Information</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-lg text-white"><span class="font-semibold">Description:</span><br class="my-4" /> {rocket.description}</p>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-lg text-white"><span class="font-semibold">Country:</span><br class="my-4" /> {rocket.country}</p>
+                            <p class="text-lg text-white"><span class="font-semibold">First Flight:</span><br class="my-4" /> {rocket.first_flight}</p>
+                            <p class="text-lg text-white"><span class="font-semibold">Success Rate:</span><br class="my-4" /> {rocket.success_rate_pct}%</p>
+                            <p class="text-lg text-white"><span class="font-semibold">Type:</span><br class="my-4" /> {rocket.type}</p>
+                            <p class="text-lg text-white"><span class="font-semibold">Company:</span><br class="my-4" /> {rocket.company}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+    </div>
+</Layout>
+
+
+
