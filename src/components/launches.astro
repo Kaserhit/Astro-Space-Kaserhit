@@ -7,15 +7,14 @@ const launches = await getLastestLaunches(order)
 
 ---
 
-<div class = "grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {launches.map(launch => (
-    <CardLaunch
-    id={launch.id}
-    img={launch.links.patch.small}
-    sucess={ launch.success}
-    flightNumber={launch.flight_number}
-    details={launch.details}
-    />
+        <CardLaunch
+            id={launch.id}
+            img={launch.links.patch.small}
+            sucess={ launch.success}
+            flightNumber={launch.flight_number}
+            details={launch.details}
+        />
     ))}
-  
 </div>

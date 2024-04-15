@@ -1,15 +1,15 @@
 ---
 import HeaderButton from '../components/headerButtom.astro';
 ---
-
 <header class="py-8 px-4 mx-auto max-w-xl lg:py-16 lg:px-6">
     <div class="mx-auto text-center mb-8 lg:mb-16">
-        <h2 class="text-6xl text-white font-bold">SpaceX Launches 🚀🌌</h2>
-        <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400 p-8">All the information about SpaceX Initial launches</p>
+        <h2 class="text-3xl lg:text-6xl text-white font-bold leading-tight lg:leading-snug text-3xl sm:text-4xl md:text-5xl lg:text-6xl">SpaceX Launches 🚀🌌</h2>
+        <p class="font-light text-gray-500 text-sm sm:text-lg lg:text-xl dark:text-gray-400 mt-4 lg:mt-6">All the information about SpaceX Initial launches</p>
     </div>
+    
 
     <nav class="flex flex-col items-center justify-between w-full text-center md:flex-row">
-        <HeaderButton class="text-white" href="/">
+        <HeaderButton class="text-white mb-4 lg:mb-0" href="/">
             <svg slot="before" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                 <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3"/>
@@ -38,6 +38,12 @@ import HeaderButton from '../components/headerButtom.astro';
 
         nav, h2, p {
             font-family: 'DuneRise'
+        }
+
+        @media (max-width: 640px) {
+            .text-4xl {
+                font-size: 2rem;
+            }
         }
     </style>
 </header>
